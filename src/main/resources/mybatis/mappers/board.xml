@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.BoardDAO">
+	<select id="selectMaxBoardNum" resultType="Integer"> 
+		<![CDATA[
+			select max(board_num) from board
+		]]>
+	</select>
+	<insert id="insertBoard" parameterType="board">
+		<![CDATA[
+			insert into board values (#{board_num},#{board_name},#{board_subject},#{board_content},#{board_filename},#{board_readcount},sysdate)
+		]]>
+	</insert>
+
+	<select id="selectBoardCount2" resultType="int">
+		<![CDATA[
+			select count(*) from board
+		]]>
+	</select>
+	
+	<select id="selectBoardCount" resultType="int">
+		<![CDATA[
+			SELECT board_num FROM
+                (SELECT * FROM board ORDER BY ROWNUM DESC)
+            WHERE ROWNUM = 1
+		]]>
+	</select>
+	
+	
+	<select id="selectBoardList" resultType="board" parameterType="int">
+			<!-- select * from board order by board_num desc -->
+		<![CDATA[
+		
+			select * from
+				(select * from board ORDER BY board_num DESC)
+			where board_num between #{startrow}-9 and #{startrow}
+			
+		]]>
+	</select>
+
+	<select id="selectBoard" resultType="board" parameterType="int">
+		<![CDATA[
+			select * from board where BOARD_NUM=#{boardNum}
+		]]>
+	</select>
+	<update id="updateReadCount" parameterType="int">
+		<![CDATA[
+			update board set board_readcount=board_readcount+1 where board_num=#{boardNum}
+		]]>
+	</update>
+	<update id="updateBoard" parameterType="Board">
+		<![CDATA[
+			update board set board_subject=#{board_subject},board_content=#{board_content}
+			where board_num=#{board_num}
+		]]>
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		<![CDATA[
+			delete from board where board_num=#{boardNum}
+		]]>
+	</delete>
+</mapper>

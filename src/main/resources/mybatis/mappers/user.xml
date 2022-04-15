@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.example.demo.dao.UserDAO">
+
+	<!-- 회원가입 -->
+	<insert id="insertuser" parameterType="User" >
+		<![CDATA[
+			insert into usertable 
+			values(#{username},#{userid},#{userpw},#{userpwCheck},#{userphone},#{agree})
+		]]>
+	</insert>
+	
+	<!-- 아이디 중복확인 -->
+    <select id="idCheck" resultType="int" parameterType="String">
+		<![CDATA[
+			SELECT COUNT(userid) FROM usertable WHERE userid = #{userid}
+		]]>
+	</select>
+	
+	<!-- 로그인  -->
+    <select id="login" resultType="User" parameterType="String">
+		<![CDATA[
+			SELECT * FROM usertable WHERE userid = #{userid}
+		]]>
+	</select>
+	
+</mapper> 
